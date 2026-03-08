@@ -199,23 +199,24 @@ st.markdown(f'<div class="card {rtl}"><div class="card-title">{L["section"]}</di
 
 col1, col2 = st.columns(2)
 with col1:
-    brand        = st.selectbox(L['brand'],        sorted(df_orig["Brand"].unique()))
-    models_list  = sorted(df_orig[df_orig["Brand"] == brand]["Model"].unique())
-    model_sel    = st.selectbox(L['model'],        models_list)
-    ram          = st.selectbox(L['ram'],          sorted(df_orig["RAM"].unique()))
-    storage      = st.selectbox(L['storage'],      sorted(df_orig["Storage"].unique()))
-    storage_type = st.selectbox(L['storage_type'], sorted(df_orig["Storage_Type"].unique()))
-with col2:
-    cpu_gen     = st.selectbox(L['cpu'],       sorted(df_orig["CPU_Gen"].unique()))
-    year        = st.selectbox(L['year'],      sorted(df_orig["Year"].unique(), reverse=True))
-    condition   = st.selectbox(L['condition'], sorted(df_orig["Condition"].unique()))
-    screen      = st.selectbox(L['screen'],    sorted(df_orig["Screen_Size"].unique()))
-    # GPU and Touchscreen filtered by Brand + Model
+    brand       = st.selectbox(L['brand'], sorted(df_orig["Brand"].unique()))
+    models_list = sorted(df_orig[df_orig["Brand"] == brand]["Model"].unique())
+    model_sel   = st.selectbox(L['model'], models_list)
+
+    # Filter all options by Brand + Model
     filtered      = df_orig[(df_orig["Brand"] == brand) & (df_orig["Model"] == model_sel)]
-    gpu_options   = sorted(filtered["GPU"].unique()) if not filtered.empty else sorted(df_orig["GPU"].unique())
-    touch_options = sorted(filtered["Touchscreen"].unique()) if not filtered.empty else sorted(df_orig["Touchscreen"].unique())
-    gpu         = st.selectbox(L['gpu'],   gpu_options)
-    touchscreen = st.selectbox(L['touch'], touch_options)
+    f             = filtered if not filtered.empty else df_orig
+
+    ram          = st.selectbox(L['ram'],          sorted(f["RAM"].unique()))
+    storage      = st.selectbox(L['storage'],      sorted(f["Storage"].unique()))
+    storage_type = st.selectbox(L['storage_type'], sorted(f["Storage_Type"].unique()))
+with col2:
+    cpu_gen     = st.selectbox(L['cpu'],       sorted(f["CPU_Gen"].unique()))
+    year        = st.selectbox(L['year'],      sorted(f["Year"].unique(), reverse=True))
+    condition   = st.selectbox(L['condition'], sorted(df_orig["Condition"].unique()))
+    screen      = st.selectbox(L['screen'],    sorted(f["Screen_Size"].unique()))
+    gpu         = st.selectbox(L['gpu'],       sorted(f["GPU"].unique()))
+    touchscreen = st.selectbox(L['touch'],     sorted(f["Touchscreen"].unique()))
 
 st.markdown('</div>', unsafe_allow_html=True)
 
