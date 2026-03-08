@@ -215,8 +215,14 @@ with col2:
     year        = st.selectbox(L['year'],      sorted(f["Year"].unique(), reverse=True))
     condition   = st.selectbox(L['condition'], sorted(df_orig["Condition"].unique()))
     screen      = st.selectbox(L['screen'],    sorted(f["Screen_Size"].unique()))
-    gpu         = st.selectbox(L['gpu'],       sorted(f["GPU"].unique()))
-    touchscreen = st.selectbox(L['touch'],     sorted(f["Touchscreen"].unique()))
+    gpu             = st.selectbox(L['gpu'], sorted(f["GPU"].unique()))
+    touch_vals      = f["Touchscreen"].unique()
+    has_touch       = "Yes" in touch_vals
+    if has_touch:
+        touchscreen = st.selectbox(L['touch'], sorted(touch_vals))
+    else:
+        touchscreen = "No"
+        st.selectbox(L['touch'], ["No"], disabled=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
